@@ -1,0 +1,40 @@
+From 0504a47e238fe3b0afc0fee3298292d8e5321fdf Mon Sep 17 00:00:00 2001
+From: Ztj <ztj1993@gmail.com>
+Date: Fri, 18 Jun 2021 10:48:46 +0800
+Subject: [PATCH] preinstall and rclone mount
+
+---
+ libexec/scoop-install.ps1 | 4 ++++
+ preinstall.ps1            | 5 +++++
+ 2 files changed, 9 insertions(+)
+ create mode 100644 preinstall.ps1
+
+diff --git a/libexec/scoop-install.ps1 b/libexec/scoop-install.ps1
+index 7044150..7842445 100644
+--- a/libexec/scoop-install.ps1
++++ b/libexec/scoop-install.ps1
+@@ -28,6 +28,10 @@
+ . "$psscriptroot\..\lib\getopt.ps1"
+ . "$psscriptroot\..\lib\depends.ps1"
+ 
++if (test-path "$psscriptroot\..\preinstall.ps1") {
++    . "$psscriptroot\..\preinstall.ps1"
++}
++
+ reset_aliases
+ 
+ function is_installed($app, $global) {
+diff --git a/preinstall.ps1 b/preinstall.ps1
+new file mode 100644
+index 0000000..f0c64bf
+--- /dev/null
++++ b/preinstall.ps1
+@@ -0,0 +1,5 @@
++
++if (!(test-path $cachedir)) {
++    Start-Process -WorkingDirectory "C:\WindowsPortable\rclone" -FilePath "scoop-cache.bat"
++    pause
++}
+-- 
+2.31.0.windows.1
+
